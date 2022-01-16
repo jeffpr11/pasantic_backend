@@ -20,10 +20,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'rest_framework',
     'django_filters',
     'corsheaders',
+
+    'utils.apps.UtilsConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -59,10 +62,10 @@ WSGI_APPLICATION = 'pasantic_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': os.getenv('DB_LOCAL_HOST'),                     
+        'HOST': os.getenv('DB_LOCAL_HOST'),
         'PORT': os.getenv('DB_LOCAL_PORT'),
         'NAME': os.getenv('DB_LOCAL_NAME'),
-        'USER': os.getenv('DB_LOCAL_USER'),                     
+        'USER': os.getenv('DB_LOCAL_USER'),
         'PASSWORD': os.getenv('DB_LOCAL_PASSWORD')
     }
 }
@@ -93,3 +96,12 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
