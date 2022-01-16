@@ -8,7 +8,7 @@ class Person(BaseModel):
     card_id = models.CharField(max_length=10, blank=True, null=True)
     city = models.CharField(max_length=100)
     cellphone = models.CharField(max_length=13)
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User, on_delete=models.DO_NOTHING, related_name='profile_of_%(class)s')
 
     def __str__(self):
@@ -17,6 +17,23 @@ class Person(BaseModel):
     class Meta:
         verbose_name_plural = "People"
         indexes = [models.Index(fields=["card_id"], name="card index person")]
+
+    @property
+    def user_data(self):
+        res = {'data': 'Error', 'success': False}
+        try:
+            user = User.objects.get(id=self.user.id)
+            res = {
+                'data': {
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "email": user.email,
+                    "username": user.username
+                },
+                'success': True}
+            return res["data"]
+        except User.DoesNotExist:
+            return res
 
 
 class Agent(Person):
@@ -33,18 +50,18 @@ class Intern(Person):
     study_field = models.CharField(max_length=100)
 
     # [certificado,..., certificado]
-    certifications = ArrayField(models.CharField(max_length=15, blank=True, null=True),
-                                size=5)
+    certifications = ArrayField(models.CharField(max_length=15),
+                                size=5, blank=True, null=True)
 
     #[idioma,..., idioma]
-    languages = ArrayField(models.CharField(max_length=15, blank=True, null=True),
-                           size=3)
+    languages = ArrayField(models.CharField(max_length=15),
+                           size=3, blank=True, null=True)
 
     # [[nombre, correo],..., [nombre, correo]]
-    references = ArrayField(ArrayField(models.CharField(max_length=100, blank=True, null=True),
-                                       size=2), size=5)
+    references = ArrayField(ArrayField(models.CharField(max_length=100),
+                                       size=2), size=5, blank=True, null=True)
 
-    friends = models.ManyToManyField('self')
+    friends = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.user.username

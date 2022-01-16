@@ -4,6 +4,14 @@ from .serializers import *
 from .models import *
 
 
+def manageUser(data, type):
+    serializer = CreateUserSerializer(data=data)
+    res = {'data': 'Error', 'success': False}
+    if serializer.is_valid():
+        user = serializer.save()
+        res = {'data': user, 'success': True}
+    return res
+
 class InternView(viewsets.ModelViewSet):
     queryset = Intern.objects.all()
     serializer_class = InternSerializer
@@ -12,11 +20,16 @@ class InternView(viewsets.ModelViewSet):
         return self.queryset
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        data = request.data.copy()
+        user = manageUser(data, 2)
+        if user.get('success'):
+            data["user"] = user.get('data').id
+            serializer = self.get_serializer(data=data)
+            if serializer.is_valid(raise_exception=True):
+                self.perform_create(serializer)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(data={"error": "Algo sucedió mal creando usuario"}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
