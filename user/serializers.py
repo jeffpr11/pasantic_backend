@@ -20,6 +20,19 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class AgentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agent
+        fields = [
+            'id',
+            'card_id',
+            'city',
+            'cellphone',
+            'user',
+            'user_data'
+        ]
+
+
 class InternSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intern
@@ -37,5 +50,6 @@ class InternSerializer(serializers.ModelSerializer):
             'languages',
             'references',
             'friends',
+            'user',
             'user_data'
         ]
