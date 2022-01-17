@@ -5,11 +5,11 @@ from .models import *
 class InternshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Internship
-        fields = '_all_'
+        fields = '__all__'
 
 
 
 class PostulationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Postulation
-        fields = '_all_'
+        fields = '__all__'
