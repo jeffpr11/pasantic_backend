@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
     'utils.apps.UtilsConfig',
     'user.apps.UserConfig',
+    'organization.apps.OrganizationConfig'
 ]
 
 MIDDLEWARE = [

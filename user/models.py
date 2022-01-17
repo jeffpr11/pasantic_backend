@@ -12,7 +12,7 @@ class Person(BaseModel):
         User, on_delete=models.DO_NOTHING, related_name='profile_of_%(class)s')
 
     def __str__(self):
-        return f"{self.card_id} {self.name}"
+        return f"{self.card_id} {self.user.first_name}"
 
     class Meta:
         verbose_name_plural = "People"
@@ -39,7 +39,7 @@ class Person(BaseModel):
 class Agent(Person):
 
     def __str__(self):
-        return f"{self.card_id} {self.name}"
+        return f"{self.card_id} {self.user.first_name}"
 
 
 class Intern(Person):
