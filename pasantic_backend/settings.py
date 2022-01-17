@@ -27,7 +27,8 @@ INSTALLED_APPS = [
 
     'utils.apps.UtilsConfig',
     'user.apps.UserConfig',
-    'organization.apps.OrganizationConfig'
+    'organization.apps.OrganizationConfig',
+    'internships.apps.InternshipsConfig',
 ]
 
 MIDDLEWARE = [
