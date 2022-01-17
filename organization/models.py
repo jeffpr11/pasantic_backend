@@ -9,8 +9,8 @@ class Enterprise(BaseModel):
     description =  models.CharField(max_length=60, blank=True)
     web_site = models.CharField(max_length=50)
     industry = models.CharField(max_length=20)
-    latitud = models.DecimalField(max_digits=22, decimal_places=16)
-    longitud = models.DecimalField(max_digits=22, decimal_places=16)
+    latitude = models.DecimalField(max_digits=22, decimal_places=16)
+    longitude = models.DecimalField(max_digits=22, decimal_places=16)
     contact = models.ForeignKey("user.Agent", on_delete=models.DO_NOTHING, related_name='agent_of_%(class)s')
 
     def __str__(self):
