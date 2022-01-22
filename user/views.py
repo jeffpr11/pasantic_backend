@@ -134,9 +134,14 @@ class CustomAuthToken(ObtainAuthToken):
             user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
             if user:
                 token, created = Token.objects.get_or_create(user=user)
+                try:
+                    intern = Intern.objects.get(user__id=user.id)
+                except Intern.DoesNotExist:
+                    intern = ''
                 info = {
                     'token': token.key,
                     'user': user.id,
+                    'intern': intern.id,
                     'username': user.username,
                     'name': f"{user.first_name} {user.last_name}",
                 }
