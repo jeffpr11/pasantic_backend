@@ -1,5 +1,9 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from user.auth.serializers import UserCredentialsSerializer
 from .serializers import *
 from .models import *
 
@@ -119,3 +123,22 @@ class InternView(viewsets.ModelViewSet):
         instance.active = False
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserCredentialsSerializer(data=request.data,
+                                               context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+            if user:
+                token, created = Token.objects.get_or_create(user=user)
+                info = {
+                    'token': token.key,
+                    'user': user.id,
+                    'username': user.username,
+                    'name': f"{user.first_name} {user.last_name}",
+                }
+                return Response(data=info, status=status.HTTP_201_CREATED)
+        return Response(data={"error": "Credenciales incorrectas."}, status=status.HTTP_400_BAD_REQUEST)
