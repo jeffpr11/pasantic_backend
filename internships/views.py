@@ -7,6 +7,7 @@ from .models import *
 class PostulationView(viewsets.ModelViewSet):
     queryset = Postulation.objects.all()
     serializer_class = PostulationSerializer
+    filterset_fields = ['postulant',]
 
     def get_queryset(self):
         return self.queryset.filter(active=True)

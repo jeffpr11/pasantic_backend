@@ -77,6 +77,7 @@ class AgentView(viewsets.ModelViewSet):
 class InternView(viewsets.ModelViewSet):
     queryset = Intern.objects.all()
     serializer_class = InternSerializer
+    filterset_fields = ['card_id',]
 
     def get_queryset(self):
         return self.queryset.filter(active=True)
@@ -147,3 +148,5 @@ class CustomAuthToken(ObtainAuthToken):
                 }
                 return Response(data=info, status=status.HTTP_201_CREATED)
         return Response(data={"error": "Credenciales incorrectas."}, status=status.HTTP_400_BAD_REQUEST)
+
+
