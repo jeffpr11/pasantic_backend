@@ -5,11 +5,32 @@ from .models import *
 class InternshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Internship
-        fields = '__all__'
+        fields = [
+            "id",
+            "name",
+            "description",
+            "type_of_workDay",
+            "requirements",
+            "challenges",
+            "profile",
+            "start_date",
+            "end_date",
+            "duration_months",
+            "remuneration",
+            "have_remuneration",
+            "owner_enterprise",
+            "enterprise"
+        ]
 
 
 
 class PostulationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Postulation
-        fields = '__all__'
+        fields = [
+            "id",
+            "state",
+            "postulant",
+            "internship",
+            "internship_data"
+        ]

@@ -38,6 +38,10 @@ class Internship(BaseModel):
     def __str__(self):
         return self.name
 
+    @property
+    def enterprise(self):
+        return self.owner_enterprise.name
+
 
 class Postulation(BaseModel):
     state = models.BooleanField(default=True)
@@ -48,3 +52,10 @@ class Postulation(BaseModel):
 
     def __str__(self):
         return f"{self.postulant.user.username}"
+
+    @property
+    def internship_data(self):
+        return {
+            "name": self.internship.name,
+            "enterprise": self.internship.enterprise
+        }
