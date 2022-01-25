@@ -7,10 +7,10 @@ from .models import *
 class PostulationView(viewsets.ModelViewSet):
     queryset = Postulation.objects.all()
     serializer_class = PostulationSerializer
-    filterset_fields = ['postulant',]
+    filterset_fields = ['postulant', 'internship',]
 
     def get_queryset(self):
-        return self.queryset.filter(active=True)
+        return self.queryset.filter(active=True).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -56,7 +56,7 @@ class InternshipView(viewsets.ModelViewSet):
     serializer_class = InternshipSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(active=True)
+        return self.queryset.filter(active=True).order_by('-id')
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

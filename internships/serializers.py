@@ -19,7 +19,8 @@ class InternshipSerializer(serializers.ModelSerializer):
             "remuneration",
             "have_remuneration",
             "owner_enterprise",
-            "enterprise"
+            "enterprise",
+            "postulants"
         ]
 
 

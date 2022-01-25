@@ -11,10 +11,11 @@ WORKDAY = [
 ]
 
 STATES = [
-    ('I', 'Iniciado'),
+    ('I', 'Iniciada'),
     ('P', 'Pendiente'),
-    ('R', 'Rechazado'),
-    ('A', 'Aprobado'),
+    ('R', 'Rechazada'),
+    ('A', 'Aprobada'),
+    ('T', 'Terminada'),
 ]
 
 
@@ -41,6 +42,10 @@ class Internship(BaseModel):
     @property
     def enterprise(self):
         return self.owner_enterprise.name
+    
+    @property
+    def postulants(self):
+        return Postulation.objects.filter(internship = self).values_list('postulant__id', flat=True)
 
 
 class Postulation(BaseModel):
@@ -51,7 +56,7 @@ class Postulation(BaseModel):
         Internship, on_delete=models.DO_NOTHING, related_name='internship_of_%(class)s')
 
     def __str__(self):
-        return f"{self.postulant.user.username}"
+        return f"{self.internship.name} => {self.postulant.user.username}"
 
     @property
     def internship_data(self):
