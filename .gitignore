@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 db.sql
 celerybeat-schedule.db
+cache/
+data/

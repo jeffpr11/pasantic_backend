@@ -1,17 +1,14 @@
 from pathlib import Path
 
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOST')]
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOST')]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,11 +62,11 @@ WSGI_APPLICATION = 'pasantic_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': os.getenv('DB_LOCAL_HOST'),
-        'PORT': os.getenv('DB_LOCAL_PORT'),
-        'NAME': os.getenv('DB_LOCAL_NAME'),
-        'USER': os.getenv('DB_LOCAL_USER'),
-        'PASSWORD': os.getenv('DB_LOCAL_PASSWORD')
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
