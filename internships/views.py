@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from .tasks import *
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import *
@@ -63,8 +66,10 @@ class InternshipView(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+        reboot_cache_main()
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    @method_decorator(cache_page(60*60))
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
