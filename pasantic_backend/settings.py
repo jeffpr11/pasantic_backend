@@ -65,11 +65,11 @@ WSGI_APPLICATION = 'pasantic_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': os.getenv('DB_LOCAL_HOST'),
+        'HOST': os.getenv('HOST'),
         'PORT': os.getenv('DB_LOCAL_PORT'),
-        'NAME': os.getenv('DB_LOCAL_NAME'),
-        'USER': os.getenv('DB_LOCAL_USER'),
-        'PASSWORD': os.getenv('DB_LOCAL_PASSWORD')
+        'NAME': os.getenv('POSTGRES_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD')
     }
 }
 
@@ -101,10 +101,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        #'utils.permissions.OnCreateAndUpdateOwnerOnly',
-        #'utils.permissions.ListAdminOnly'
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
@@ -114,3 +110,25 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ]
 }
+
+CELERY_BROKER_URL = f"redis://{os.getenv('HOST')}:6379"
+CELERY_RESULT_BACKEND = f"redis://{os.getenv('HOST')}:6379"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{os.getenv('HOST')}:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+CACHE_TTL = 60 * 1
